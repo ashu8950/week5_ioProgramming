@@ -15,11 +15,22 @@ public class BasicEncryptionUtil {
 
     // Decrypt data using Base64 decoding
     public static String decrypt(String encryptedData) {
+        if (encryptedData == null || encryptedData.isEmpty()) {
+            return "Invalid Data";
+        }
         try {
             byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
             return new String(decodedBytes);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Error decrypting data", e);
+            System.err.println("Decryption failed for data: " + encryptedData);
+            return "Invalid Data";
         }
     }
+
+    // Validates if the data is encrypted (Base64 encoded)
+    public static boolean isValidEncryptedData(String data) {
+        return data != null && data.matches("^[A-Za-z0-9+/=]+$");
+    }
 }
+
+
